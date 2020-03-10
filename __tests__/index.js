@@ -5,9 +5,20 @@ import gendiff from '../src';
 const getFixturePath = (filename) => path.join(__dirname, '..', '__fixtures__', filename);
 const readFile = (filename) => fs.readFileSync(getFixturePath(filename), 'utf-8');
 
-test('get difference between 2 files', () => {
+test('get difference between 2 JSON files', () => {
   const beforeFilePath = getFixturePath('before.json');
   const afterFilePath = getFixturePath('after.json');
+  const expectedResult = readFile('result.txt');
+
+  const result = gendiff(beforeFilePath, afterFilePath);
+  // console.log(result);
+
+  expect(result).toEqual(expectedResult);
+});
+
+test('get difference between 2 YAML files', () => {
+  const beforeFilePath = getFixturePath('before.yml');
+  const afterFilePath = getFixturePath('after.yml');
   const expectedResult = readFile('result.txt');
 
   const result = gendiff(beforeFilePath, afterFilePath);

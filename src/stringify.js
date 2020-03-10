@@ -6,7 +6,7 @@ const dataSymbols = {
 
 const formatData = (data) => {
   if (data.type === 'changed') {
-    return data.values.reduce((acc, value) => [...acc, formatData(value)], []).join('');
+    return data.values.map(formatData).join('');
   }
 
   return `  ${dataSymbols[data.type]} ${data.key}: ${data.value}\n`;
