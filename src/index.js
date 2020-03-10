@@ -1,21 +1,17 @@
 import fs from 'fs';
-import parseData from './parser';
+import parse from './parser';
 import diff from './diff';
+import stringify from './stringify';
 
 const run = (firstConfig, secondConfig) => {
   const data1 = fs.readFileSync(firstConfig, 'utf8');
   const data2 = fs.readFileSync(secondConfig, 'utf8');
 
-  const parsedData1 = parseData(data1);
-  const parsedData2 = parseData(data2);
+  const parsedData1 = parse(data1);
+  const parsedData2 = parse(data2);
 
-  console.log(parsedData1);
-  console.log(parsedData2);
-
-  const comparedData = diff(parsedData1, parsedData2);
+  const normalizedData = diff(parsedData1, parsedData2);
+  return stringify(normalizedData);
 };
 
-
-run('src/before.json', 'src/after.json');
-
-// export default run;
+export default run;
