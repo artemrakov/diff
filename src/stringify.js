@@ -16,7 +16,7 @@ const formatData = (data) => {
 const stringify = (data) => {
   const main = data.reduce((acc, value) => acc + formatData(value), ' ');
   return `{\n${main}}\n`;
-}
+};
 
 
 export default stringify;
