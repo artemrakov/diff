@@ -4,6 +4,10 @@ const build = (key, beforeData, afterData) => {
   const beforeValue = beforeData[key];
   const afterValue = afterData[key];
 
+  if (_.isObject(beforeValue) && _.isObject(afterValue)) {
+    return { key, children: diff(beforeValue, afterValue), type: 'unchanged' }
+  }
+
   if (_.has(beforeData, key) && _.has(afterData, key)) {
     if (beforeValue === afterValue) {
       return { key, value: beforeValue, type: 'unchanged' };
@@ -13,23 +17,25 @@ const build = (key, beforeData, afterData) => {
       key,
       type: 'changed',
       values: [
-        { key, value: afterValue, type: 'added' },
         { key, value: beforeValue, type: 'removed' },
+        { key, value: afterValue, type: 'added' }
       ],
     };
   }
 
 
-  if (_.has(beforeData, key)) {
-    return { key, value: beforeValue, type: 'removed' };
+  if (_.has(afterData, key)) {
+    return { key, value: afterValue, type: 'added' };
   }
 
 
-  return { key, value: afterValue, type: 'added' };
+  return { key, value: beforeValue, type: 'removed' };
 };
 
 
-export default (beforeData, afterData) => {
+const diff = (beforeData, afterData) => {
   const unionKeys = _.union(_.keys(beforeData), _.keys(afterData));
   return unionKeys.reduce((acc, key) => [...acc, build(key, beforeData, afterData)], []);
 };
+
+export default diff;
