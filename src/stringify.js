@@ -9,7 +9,7 @@ const dataSymbols = {
 const formatData = (data) => {
 
   if (data.children) {
-    return `  ${data.key}: ${stringify(data.children)}`;
+    return `  ${dataSymbols[data.type]} ${data.key}: ${stringify(data.children)}`;
   }
 
   if (data.type === 'changed') {
