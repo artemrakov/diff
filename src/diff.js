@@ -1,41 +1,65 @@
 import _ from 'lodash';
 
-const build = (key, beforeData, afterData) => {
-  const beforeValue = beforeData[key];
-  const afterValue = afterData[key];
+const diff = (before, after) => {
+  // Оставил чтобы показать свои мысли (как я сначала начал делать)
+  // const build = (key, acc) => {
+  //   const beforeValue = beforeData[key];
+  //   const afterValue = afterData[key];
+  //
+  //   if (beforeValue === afterValue) {
+  //     return [ ...acc, { key, value: beforeValue, type: 'unchanged' } ];
+  //   }
+  //
+  //   if (_.isObject(beforeValue) && _.isObject(afterValue)) {
+  //     return [ ...acc, { key, children: diff(beforeValue, afterValue), type: 'unchanged' } ]
+  //   }
+  //
+  //   if (_.has(beforeData, key) && _.has(afterData, key)) {
+  //     return [ ...acc,
+  //       { key, value: beforeValue, type: 'removed' },
+  //       { key, value: afterValue, type: 'added' }
+  //     ]
+  //   };
+  //
+  //   if (_.has(afterData, key)) {
+  //     return [ ...acc, { key, value: afterValue, type: 'added' }];
+  //   }
+  //
+  //   return [ ...acc, { key, value: beforeValue, type: 'removed' }];
+  // };
 
-  if (_.isObject(beforeValue) && _.isObject(afterValue)) {
-    return { key, children: diff(beforeValue, afterValue), type: 'unchanged' }
-  }
-
-  if (_.has(beforeData, key) && _.has(afterData, key)) {
-    if (beforeValue === afterValue) {
-      return { key, value: beforeValue, type: 'unchanged' };
+  const buildMethods = [
+    {
+      check: key  => before[key] === after[key],
+      proccess: key => ({ key, value: before[key], type: 'unchanged' })
+    },
+    {
+      check: key => _.isObject(before[key]) && _.isObject(after[key]),
+      proccess: key => ({ key, children: diff(before[key], after[key]), type: 'nested' })
+    },
+    {
+      check: key => _.has(before, key) && _.has(after, key),
+      proccess: key => [
+        { key, value: before[key], type: 'removed' }
+        { key, value: after[key], type: 'added' }
+      ]
+    },
+    {
+      check: key => _.has(after, key),
+      proccess: key => ({ key, value: after[key], type: 'added' })
+    },
+    {
+      check: key => _.has(before, key),
+      proccess: key => ({ key, value: before[key], type: 'removed' })
     }
+  ];
 
-    return {
-      key,
-      type: 'changed',
-      values: [
-        { key, value: beforeValue, type: 'removed' },
-        { key, value: afterValue, type: 'added' }
-      ],
-    };
-  }
+  const unionKeys = _.union(_.keys(before), _.keys(after));
 
-
-  if (_.has(afterData, key)) {
-    return { key, value: afterValue, type: 'added' };
-  }
-
-
-  return { key, value: beforeValue, type: 'removed' };
-};
-
-
-const diff = (beforeData, afterData) => {
-  const unionKeys = _.union(_.keys(beforeData), _.keys(afterData));
-  return unionKeys.reduce((acc, key) => [...acc, build(key, beforeData, afterData)], []);
+  return unionKeys.reduce((acc, key) => {
+    const { proccess } = buildMethods.find(({ check }) => check(key));
+    return _.flatten([...acc, proccess(key)]);
+  }, []);
 };
 
 export default diff;
