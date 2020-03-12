@@ -16,7 +16,7 @@ const run = (firstConfig, secondConfig, format = 'tree') => {
 
   const normalizedData = diff(parsedData1, parsedData2);
 
-  const formatter = getFormatter(format)
+  const formatter = getFormatter(format);
   return formatter(normalizedData);
 };
 

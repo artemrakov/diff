@@ -23,7 +23,7 @@ const stringifyHelper = (nodes, indentation) => {
     nested: (node) => `${addIndentation(indentation)}  ${node.key}: {\n${stringifyHelper(node.children, indentation + INDENTATION_STEP)}  ${addIndentation(indentation)}}\n`,
   };
 
-  return nodes.reduce((acc, node) => acc + presentNode[node.type](node, indentation), '');
+  return nodes.reduce((acc, node) => acc + presentNode[node.type](node), '');
 };
 
 

@@ -10,12 +10,14 @@ const diff = (before, after) => {
     }
 
     if (_.isObject(beforeValue) && _.isObject(afterValue)) {
-      return { key, children: diff(beforeValue, afterValue), type: 'nested' }
+      return { key, children: diff(beforeValue, afterValue), type: 'nested' };
     }
 
     if (_.has(before, key) && _.has(after, key)) {
-      return { key, beforeValue, afterValue, type: 'changed' }
-    };
+      return {
+        key, beforeValue, afterValue, type: 'changed',
+      };
+    }
 
     if (_.has(after, key)) {
       return { key, value: afterValue, type: 'added' };
@@ -26,9 +28,7 @@ const diff = (before, after) => {
 
   const unionKeys = _.union(_.keys(before), _.keys(after));
 
-  return unionKeys.reduce((acc, key) => {
-    return [...acc, buildNode(key)];
-  }, []);
+  return unionKeys.reduce((acc, key) => [...acc, buildNode(key)], []);
 };
 
 export default diff;
