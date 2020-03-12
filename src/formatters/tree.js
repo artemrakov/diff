@@ -3,54 +3,23 @@ import _ from 'lodash';
 const INDENTATION = 2;
 const INDENTATION_STEP = 4;
 
-const addIndentation = (Indentation) => ' '.repeat(Indentation);
+const addIndentation = (indentation) => ' '.repeat(indentation);
 
-const buildChangedNode = (node, indentation) => {
-  const removedNode = buildValue({
-    symbol: '-', value: node.beforeValue, key: node.key, indentation
-  })
-  const addNode = buildValue({
-    symbol: '+', value: node.afterValue, key: node.key, indentation
-  })
-
-  return `${removedNode}${addNode}`;
-}
-
-const buildObject = ({
-  object, indentation, mainKey, symbol,
-}) => {
-  const valuesOfKey = Object.keys(object).reduce((acc, key) => `${acc}${addIndentation(indentation + INDENTATION_STEP)}  ${key}: ${object[key]}\n`, '');
-
-  return `${addIndentation(indentation)}${symbol} ${mainKey}: {\n${valuesOfKey}  ${addIndentation(indentation)}}\n`;
-};
-
-const buildValue = ({
-  indentation, symbol, key, value,
-}) => {
-  if (_.isObject(value)) {
-    return buildObject({
-      symbol,
-      indentation,
-      object: value,
-      mainKey: key,
-    });
+const buildValue = (value, indentation) => {
+  if (!_.isObject(value)) {
+    return value;
   }
 
-  return `${addIndentation(indentation)}${symbol} ${key}: ${value}\n`;
+  const valuesOfKeys = Object.keys(value).reduce((acc, key) => `${acc}${addIndentation(indentation + INDENTATION_STEP)}  ${key}: ${value[key]}\n`, '');
+  return `{\n${valuesOfKeys}  ${addIndentation(indentation)}}`;
 };
 
 const stringifyHelper = (nodes, indentation) => {
   const presentNode = {
-    added: (node) => buildValue({
-      symbol: '+', value: node.value, key: node.key, indentation,
-    }),
-    removed: (node) => buildValue({
-      symbol: '-', value: node.value, key: node.key, indentation,
-    }),
-    unchanged: (node) => buildValue({
-      symbol: ' ', value: node.value, key: node.key, indentation,
-    }),
-    changed: (node) => buildChangedNode(node, indentation),
+    added: (node) => `${addIndentation(indentation)}+ ${node.key}: ${buildValue(node.value, indentation)}\n`,
+    removed: (node) => `${addIndentation(indentation)}- ${node.key}: ${buildValue(node.value, indentation)}\n`,
+    unchanged: (node) => `${addIndentation(indentation)}  ${node.key}: ${buildValue(node.value, indentation)}\n`,
+    changed: (node) => `${addIndentation(indentation)}- ${node.key}: ${buildValue(node.beforeValue, indentation)}\n${addIndentation(indentation)}+ ${node.key}: ${buildValue(node.afterValue, indentation)}\n`,
     nested: (node) => `${addIndentation(indentation)}  ${node.key}: {\n${stringifyHelper(node.children, indentation + INDENTATION_STEP)}  ${addIndentation(indentation)}}\n`,
   };
 
