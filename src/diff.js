@@ -40,7 +40,7 @@ const diff = (before, after) => {
     {
       check: key => _.has(before, key) && _.has(after, key),
       proccess: key => [
-        { key, value: before[key], type: 'removed' }
+        { key, value: before[key], type: 'removed' },
         { key, value: after[key], type: 'added' }
       ]
     },
