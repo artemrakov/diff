@@ -12,10 +12,7 @@ const diff = (before, after) => {
     },
     {
       condition: (key) => _.has(before, key) && _.has(after, key),
-      getNode: (key) => [
-        { key, value: before[key], type: 'removed' },
-        { key, value: after[key], type: 'added' },
-      ],
+      getNode: (key) => ({ key, beforeValue: before[key], afterValue: after[key], type: "changed" })
     },
     {
       condition: (key) => _.has(after, key),
@@ -31,7 +28,7 @@ const diff = (before, after) => {
 
   return unionKeys.reduce((acc, key) => {
     const { getNode } = buildMethods.find(({ condition }) => condition(key));
-    return _.flatten([...acc, getNode(key)]);
+    return [...acc, getNode(key)];
   }, []);
 };
 
