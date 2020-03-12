@@ -16,7 +16,7 @@ const run = (firstConfig, secondConfig) => {
 
   const normalizedData = diff(parsedData1, parsedData2);
   console.log(normalizedData);
-  console.log(stringify(normalizedData))
+  console.log(stringify(normalizedData));
   return stringify(normalizedData);
 };
 
