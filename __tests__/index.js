@@ -64,3 +64,33 @@ test('get difference between 2 INI files in plain format', () => {
 
   expect(result).toEqual(expectedResult);
 });
+
+test('get difference between 2 JSON files in json format', () => {
+  const beforeFilePath = getFixturePath('before.json');
+  const afterFilePath = getFixturePath('after.json');
+  const expectedResult = readFile('results/json.txt');
+
+  const result = gendiff(beforeFilePath, afterFilePath, 'json');
+
+  expect(result).toEqual(expectedResult);
+});
+
+test('get difference between 2 YAML files in json format', () => {
+  const beforeFilePath = getFixturePath('before.yml');
+  const afterFilePath = getFixturePath('after.yml');
+  const expectedResult = readFile('results/json.txt');
+
+  const result = gendiff(beforeFilePath, afterFilePath, 'json');
+
+  expect(result).toEqual(expectedResult);
+});
+
+test('get difference between 2 INI files in json format', () => {
+  const beforeFilePath = getFixturePath('before.ini');
+  const afterFilePath = getFixturePath('after.ini');
+  const expectedResult = readFile('results/json.txt');
+
+  const result = gendiff(beforeFilePath, afterFilePath, 'json');
+
+  expect(result).toEqual(expectedResult);
+});

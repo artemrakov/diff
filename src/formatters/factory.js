@@ -1,5 +1,6 @@
 import plain from './plain';
 import tree from './tree';
+import json from './json';
 
 const getFormatter = (format) => {
   switch (format) {
@@ -7,6 +8,8 @@ const getFormatter = (format) => {
       return tree;
     case 'plain':
       return plain;
+    case 'json':
+      return json;
     default:
       throw new Error(`Unknown formatter format: ${format}`);
   }
