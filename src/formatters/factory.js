@@ -4,9 +4,9 @@ import json from './json';
 
 const getFormatter = (format) => {
   const formats = {
-    'tree': tree,
-    'json': json,
-    'plain': plain
+    tree,
+    json,
+    plain,
   };
 
   return formats[format];
