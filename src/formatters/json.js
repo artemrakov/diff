@@ -1,10 +1,6 @@
-import _ from 'lodash';
-
-const REGEX_FOR_NUMBER = /^-?[\d.]+(?:e-?\d+)?$/;
-
 const stringifyHelper = (nodes) => {
   const presentNode = {
-    added: (node) => ({ key: node.key, type: node.type, value: node.value}),
+    added: (node) => ({ key: node.key, type: node.type, value: node.value }),
     removed: (node) => ({ key: node.key, type: node.type }),
     unchanged: (node) => ({ key: node.key, type: node.type, value: node.value }),
     changed: (node) => ({

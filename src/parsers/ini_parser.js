@@ -13,7 +13,7 @@ const objectParser = (data) => {
 
     // rare case in json file ini parser parse number as string
     const value = REGEX_FOR_NUMBER.test(element) ? parseInt(element, 10) : element;
-    return { ...acc, [key]: value }
+    return { ...acc, [key]: value };
   }, {});
 
   return result;
@@ -23,4 +23,4 @@ export default (data) => {
   const parsedData = ini.parse(data);
 
   return objectParser(parsedData);
-}
+};
