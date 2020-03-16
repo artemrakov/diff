@@ -9,7 +9,6 @@ program.version('0.0.1')
   .option('-f, --format [type]', 'output format')
   .action((firstConfig, secondConfig, option) => {
     console.log(gendiff(firstConfig, secondConfig, option.format));
-  })
+  });
 
 program.parse(process.argv);
-
