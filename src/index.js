@@ -4,7 +4,7 @@ import getParser from './parsers/factory';
 import diff from './diff';
 import getFormatter from './formatters/factory';
 
-const run = (firstConfig, secondConfig, format = 'tree') => {
+const gendiff = (firstConfig, secondConfig, format = 'tree') => {
   const fileFormat = path.extname(firstConfig);
   const data1 = fs.readFileSync(firstConfig, 'utf8');
   const data2 = fs.readFileSync(secondConfig, 'utf8');
@@ -20,4 +20,4 @@ const run = (firstConfig, secondConfig, format = 'tree') => {
   return formatter(normalizedData);
 };
 
-export default run;
+export default gendiff;
