@@ -17,20 +17,20 @@ const buildValue = (value) => {
 
 const buildKey = (key, accKey) => [...accKey, key].join('.');
 
-const stringifyHelper = (nodes, accKey) => {
+const buildNodes = (nodes, accKey) => {
   const presentNode = {
     added: (node) => `Property '${buildKey(node.key, accKey)}' was added with value: ${buildValue(node.value)}\n`,
     removed: (node) => `Property '${buildKey(node.key, accKey)}' was deleted\n`,
     unchanged: () => '',
     changed: (node) => `Property '${buildKey(node.key, accKey)}' was changed from ${buildValue(node.beforeValue)} to ${buildValue(node.afterValue)}\n`,
-    nested: (node) => stringifyHelper(node.children, [...accKey, node.key]),
+    nested: (node) => buildNodes(node.children, [...accKey, node.key]),
   };
 
   return nodes.reduce((acc, node) => acc + presentNode[node.type](node), []);
 };
 
 
-const stringify = (data) => stringifyHelper(data, '');
+const stringify = (data) => buildNodes(data, '');
 
 
 export default stringify;

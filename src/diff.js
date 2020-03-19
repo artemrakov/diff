@@ -1,6 +1,6 @@
 import _ from 'lodash';
 
-const diff = (before, after) => {
+const buildDiff = (before, after) => {
   const buildNode = (key) => {
     const beforeValue = before[key];
     const afterValue = after[key];
@@ -10,7 +10,7 @@ const diff = (before, after) => {
     }
 
     if (_.isObject(beforeValue) && _.isObject(afterValue)) {
-      return { key, children: diff(beforeValue, afterValue), type: 'nested' };
+      return { key, children: buildDiff(beforeValue, afterValue), type: 'nested' };
     }
 
     if (_.has(before, key) && _.has(after, key)) {
@@ -28,7 +28,7 @@ const diff = (before, after) => {
 
   const unionKeys = _.union(_.keys(before), _.keys(after));
 
-  return unionKeys.reduce((acc, key) => [...acc, buildNode(key)], []);
+  return unionKeys.map(buildNode);
 };
 
-export default diff;
+export default buildDiff;

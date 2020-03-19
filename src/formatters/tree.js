@@ -10,24 +10,25 @@ const buildValue = (value, indentation) => {
     return value;
   }
 
-  const valuesOfKeys = Object.keys(value).reduce((acc, key) => `${acc}${addIndentation(indentation + INDENTATION_STEP)}  ${key}: ${value[key]}\n`, '');
-  return `{\n${valuesOfKeys}  ${addIndentation(indentation)}}`;
+  const valuesOfKeys = Object.keys(value).map(key => `${addIndentation(indentation + INDENTATION_STEP)}  ${key}: ${value[key]}`).join('\n');
+  return `{\n${valuesOfKeys}\n  ${addIndentation(indentation)}}`;
 };
 
-const stringifyHelper = (nodes, indentation) => {
+const stringify = (nodes, indentation) => {
   const presentNode = {
-    added: (node) => `${addIndentation(indentation)}+ ${node.key}: ${buildValue(node.value, indentation)}\n`,
-    removed: (node) => `${addIndentation(indentation)}- ${node.key}: ${buildValue(node.value, indentation)}\n`,
-    unchanged: (node) => `${addIndentation(indentation)}  ${node.key}: ${buildValue(node.value, indentation)}\n`,
-    changed: (node) => `${addIndentation(indentation)}- ${node.key}: ${buildValue(node.beforeValue, indentation)}\n${addIndentation(indentation)}+ ${node.key}: ${buildValue(node.afterValue, indentation)}\n`,
-    nested: (node) => `${addIndentation(indentation)}  ${node.key}: {\n${stringifyHelper(node.children, indentation + INDENTATION_STEP)}  ${addIndentation(indentation)}}\n`,
+    added: (node) => `${addIndentation(indentation)}+ ${node.key}: ${buildValue(node.value, indentation)}`,
+    removed: (node) => `${addIndentation(indentation)}- ${node.key}: ${buildValue(node.value, indentation)}`,
+    unchanged: (node) => `${addIndentation(indentation)}  ${node.key}: ${buildValue(node.value, indentation)}`,
+    changed: (node) => [`${addIndentation(indentation)}- ${node.key}: ${buildValue(node.beforeValue, indentation)}`, `${addIndentation(indentation)}+ ${node.key}: ${buildValue(node.afterValue, indentation)}`],
+    nested: (node) => [`${addIndentation(indentation)}  ${node.key}: {`, `${stringify(node.children, indentation + INDENTATION_STEP)}`,  `  ${addIndentation(indentation)}}`],
   };
 
-  return nodes.reduce((acc, node) => acc + presentNode[node.type](node), '');
+  const flattenNodes = _.flatten(nodes.map(node => presentNode[node.type](node)));
+  return flattenNodes.join('\n');
 };
 
 
-const stringify = (data) => `{\n${stringifyHelper(data, INDENTATION)}}\n`;
+const render = data => `{\n${stringify(data, INDENTATION)}\n}\n`;
 
 
-export default stringify;
+export default render;
