@@ -20,7 +20,7 @@ const stringify = (nodes, indentation) => {
     removed: (node) => `${addIndentation(indentation)}- ${node.key}: ${buildValue(node.value, indentation)}`,
     unchanged: (node) => `${addIndentation(indentation)}  ${node.key}: ${buildValue(node.value, indentation)}`,
     changed: (node) => [`${addIndentation(indentation)}- ${node.key}: ${buildValue(node.beforeValue, indentation)}`, `${addIndentation(indentation)}+ ${node.key}: ${buildValue(node.afterValue, indentation)}`],
-    nested: (node) => [`${addIndentation(indentation)}  ${node.key}: {`, `${stringify(node.children, indentation + INDENTATION_STEP)}`, `  ${addIndentation(indentation)}}`],
+    nested: (node) => [`${addIndentation(indentation)}  ${node.key}: {`, stringify(node.children, indentation + INDENTATION_STEP), `  ${addIndentation(indentation)}}`],
   };
 
   const flattenNodes = _.flatten(nodes.map((node) => presentNode[node.type](node)));
