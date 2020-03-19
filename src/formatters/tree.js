@@ -10,7 +10,7 @@ const buildValue = (value, indentation) => {
     return value;
   }
 
-  const valuesOfKeys = Object.keys(value).map(key => `${addIndentation(indentation + INDENTATION_STEP)}  ${key}: ${value[key]}`).join('\n');
+  const valuesOfKeys = Object.keys(value).map((key) => `${addIndentation(indentation + INDENTATION_STEP)}  ${key}: ${value[key]}`).join('\n');
   return `{\n${valuesOfKeys}\n  ${addIndentation(indentation)}}`;
 };
 
@@ -20,15 +20,15 @@ const stringify = (nodes, indentation) => {
     removed: (node) => `${addIndentation(indentation)}- ${node.key}: ${buildValue(node.value, indentation)}`,
     unchanged: (node) => `${addIndentation(indentation)}  ${node.key}: ${buildValue(node.value, indentation)}`,
     changed: (node) => [`${addIndentation(indentation)}- ${node.key}: ${buildValue(node.beforeValue, indentation)}`, `${addIndentation(indentation)}+ ${node.key}: ${buildValue(node.afterValue, indentation)}`],
-    nested: (node) => [`${addIndentation(indentation)}  ${node.key}: {`, `${stringify(node.children, indentation + INDENTATION_STEP)}`,  `  ${addIndentation(indentation)}}`],
+    nested: (node) => [`${addIndentation(indentation)}  ${node.key}: {`, `${stringify(node.children, indentation + INDENTATION_STEP)}`, `  ${addIndentation(indentation)}}`],
   };
 
-  const flattenNodes = _.flatten(nodes.map(node => presentNode[node.type](node)));
+  const flattenNodes = _.flatten(nodes.map((node) => presentNode[node.type](node)));
   return flattenNodes.join('\n');
 };
 
 
-const render = data => `{\n${stringify(data, INDENTATION)}\n}\n`;
+const render = (data) => ['{', stringify(data, INDENTATION), '}'].join('\n');
 
 
 export default render;

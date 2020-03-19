@@ -5,7 +5,7 @@ import buildDiff from './diff';
 import getFormatter from './formatters';
 
 const gendiff = (firstConfig, secondConfig, format = 'tree') => {
-  const fileExtention= path.extname(firstConfig);
+  const fileExtention = path.extname(firstConfig);
   const data1 = fs.readFileSync(firstConfig, 'utf8');
   const data2 = fs.readFileSync(secondConfig, 'utf8');
 

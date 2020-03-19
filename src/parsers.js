@@ -6,9 +6,9 @@ const iniParse = (data) => {
   const REGEX_FOR_NUMBER = /^-?[\d.]+(?:e-?\d+)?$/;
   const parsedData = ini.parse(data);
 
-  const objectParse = (data) => {
-    const result = Object.keys(data).reduce((acc, key) => {
-      const element = data[key];
+  const objectParse = (object) => {
+    const result = Object.keys(object).reduce((acc, key) => {
+      const element = object[key];
 
       if (_.isObject(element)) {
         return { ...acc, [key]: objectParse(element) };

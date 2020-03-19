@@ -22,7 +22,7 @@ describe('difference between 2 files', () => {
     (resultFormat, givenFileFormat, resultPath) => {
       const beforeFilePath = getFixturePath(`before.${givenFileFormat}`);
       const afterFilePath = getFixturePath(`after.${givenFileFormat}`);
-      const expectedResult = readFile(resultPath);
+      const expectedResult = readFile(resultPath).trim();
 
       const result = gendiff(beforeFilePath, afterFilePath, resultFormat);
 
