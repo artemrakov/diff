@@ -14,6 +14,6 @@ const buildNodes = (nodes) => {
   return nodes.map((node) => presentNode[node.type](node));
 };
 
-const stringify = (data) => JSON.stringify(buildNodes(data));
+const render = (data) => JSON.stringify(buildNodes(data));
 
-export default stringify;
+export default render;
