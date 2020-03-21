@@ -17,7 +17,7 @@ const buildValue = (value) => {
 
 const buildKey = (key, accKey) => [...accKey, key].join('.');
 
-const buildNodes = (nodes, accKey) => {
+const stringify = (nodes, accKey) => {
   const presentNode = {
     added: (node) => `Property '${buildKey(node.key, accKey)}' was added with value: ${buildValue(node.value)}`,
     removed: (node) => `Property '${buildKey(node.key, accKey)}' was deleted`,
