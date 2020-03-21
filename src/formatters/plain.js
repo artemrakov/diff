@@ -23,7 +23,7 @@ const buildNodes = (nodes, accKey) => {
     removed: (node) => `Property '${buildKey(node.key, accKey)}' was deleted`,
     unchanged: () => null,
     changed: (node) => `Property '${buildKey(node.key, accKey)}' was changed from ${buildValue(node.beforeValue)} to ${buildValue(node.afterValue)}`,
-    nested: (node) => buildNodes(node.children, [...accKey, node.key]),
+    nested: (node) => stringify(node.children, [...accKey, node.key]),
   };
 
   const result = nodes.map((node) => presentNode[node.type](node));
@@ -31,7 +31,7 @@ const buildNodes = (nodes, accKey) => {
 };
 
 
-const stringify = (data) => buildNodes(data, '');
+const render = (data) => stringify(data, '');
 
 
-export default stringify;
+export default render;
