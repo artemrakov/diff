@@ -4,10 +4,10 @@ import getParser from './parsers';
 import buildDiff from './diff';
 import getFormatter from './formatters';
 
-const gendiff = (firstConfig, secondConfig, format = 'tree') => {
-  const fileExtention = path.extname(firstConfig);
-  const data1 = fs.readFileSync(firstConfig, 'utf8');
-  const data2 = fs.readFileSync(secondConfig, 'utf8');
+const gendiff = (firstFilePath, secondFilePath, format = 'tree') => {
+  const fileExtention = path.extname(firstFilePath).replace('.', '');
+  const data1 = fs.readFileSync(firstFilePath, 'utf8');
+  const data2 = fs.readFileSync(secondFilePath, 'utf8');
 
   const parse = getParser(fileExtention);
 
@@ -16,8 +16,8 @@ const gendiff = (firstConfig, secondConfig, format = 'tree') => {
 
   const diff = buildDiff(parsedData1, parsedData2);
 
-  const formatParse = getFormatter(format);
-  return formatParse(diff);
+  const stringify = getFormatter(format);
+  return stringify(diff);
 };
 
 export default gendiff;

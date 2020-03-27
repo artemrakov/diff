@@ -23,7 +23,7 @@ const stringify = (nodes, indentation) => {
     nested: (node) => [`${addIndentation(indentation)}  ${node.key}: {`, stringify(node.children, indentation + INDENTATION_STEP), `  ${addIndentation(indentation)}}`],
   };
 
-  const flattenNodes = _.flatten(nodes.map((node) => presentNode[node.type](node)));
+  const flattenNodes = nodes.map(node => presentNode[node.type](node)).flat();
   return flattenNodes.join('\n');
 };
 

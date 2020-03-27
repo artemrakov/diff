@@ -5,7 +5,15 @@ const buildDiff = (before, after) => {
     const beforeValue = before[key];
     const afterValue = after[key];
 
-    if (beforeValue === afterValue) {
+    if (_.has(after, key) && !_.has(before, key)) {
+      return { key, value: afterValue, type: 'added' };
+    }
+
+    if (_.has(before, key) && !_.has(after, key)) {
+      return { key, value: beforeValue, type: 'removed' };
+    }
+
+    if (_.has(before, key) && _.has(after, key) && beforeValue === afterValue) {
       return { key, value: beforeValue, type: 'unchanged' };
     }
 
@@ -13,18 +21,10 @@ const buildDiff = (before, after) => {
       return { key, children: buildDiff(beforeValue, afterValue), type: 'nested' };
     }
 
-    if (_.has(before, key) && _.has(after, key)) {
-      return {
-        key, beforeValue, afterValue, type: 'changed',
-      };
-    }
-
-    if (_.has(after, key)) {
-      return { key, value: afterValue, type: 'added' };
-    }
-
-    return { key, value: beforeValue, type: 'removed' };
-  };
+    return {
+      key, beforeValue, afterValue, type: 'changed',
+    };
+  }
 
   const unionKeys = _.union(_.keys(before), _.keys(after));
 

@@ -28,11 +28,11 @@ const iniParse = (data) => {
 
 const getParser = (parseFormat) => {
   switch (parseFormat) {
-    case '.json':
+    case 'json':
       return JSON.parse;
-    case '.yml':
+    case 'yml':
       return yaml.safeLoad;
-    case '.ini':
+    case 'ini':
       return iniParse;
     default:
       throw new Error(`Unknown parse format: ${parseFormat}`);
