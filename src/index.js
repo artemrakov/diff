@@ -16,8 +16,8 @@ const gendiff = (firstFilePath, secondFilePath, format = 'tree') => {
 
   const diff = buildDiff(parsedData1, parsedData2);
 
-  const stringify = getFormatter(format);
-  return stringify(diff);
+  const render = getFormatter(format);
+  return render(diff);
 };
 
 export default gendiff;
