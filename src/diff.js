@@ -24,7 +24,7 @@ const buildDiff = (before, after) => {
     return {
       key, beforeValue, afterValue, type: 'changed',
     };
-  }
+  };
 
   const unionKeys = _.union(_.keys(before), _.keys(after));
 

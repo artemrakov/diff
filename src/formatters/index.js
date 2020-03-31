@@ -5,7 +5,7 @@ const getFormatter = (format) => {
   const formats = {
     tree,
     plain,
-    json: JSON.stringify
+    json: JSON.stringify,
   };
 
   return formats[format];
